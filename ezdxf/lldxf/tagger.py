@@ -83,7 +83,10 @@ def low_level_tagger(stream):
                 raise DXFStructureError('Invalid group code "{}" at line {}.'.format(code, line))
             else:
                 if code != 999:  # skip comments
-                    yield DXFTag(code, value.rstrip('\n'))
+                    try:
+                        yield DXFTag(code, value.rstrip('\n'))
+                    except TypeError:
+                        yield DXFTag(code, value.rstrip(b'\n'))
                 line += 2
         else:
             return
